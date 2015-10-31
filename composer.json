@@ -1,0 +1,16 @@
+{
+    "name": "martiis/elasticsearch-reindexer",
+    "description": "A quick tool for reindexing your elasticsearch data",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martynas Sudintas",
+            "email": "martynas.sudintas@ongr.io"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "symfony/console": "~2.7",
+        "elasticsearch/elasticsearch": "~2.0"
+    }
+}
