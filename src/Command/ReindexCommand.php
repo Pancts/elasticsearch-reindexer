@@ -75,7 +75,7 @@ class ReindexCommand extends Command
         $output->writeln('<info>Scanning & indexing...</info>');
         $progress = new ProgressBar($output);
         $progress->setFormat('debug_nomax');
-        $progress->setRedrawFrequency(200);
+        $progress->setRedrawFrequency(100);
 
         foreach ($scanner->scan() as $document) {
             $indexer->index($document);
