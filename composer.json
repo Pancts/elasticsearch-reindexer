@@ -18,5 +18,6 @@
         "psr-4": {
             "ElasticsearchReindexer\\": "src/"
         }
-    }
+    },
+    "bin": ["bin/reindex", "bin/reindex.php"]
 }
