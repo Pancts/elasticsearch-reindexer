@@ -35,8 +35,13 @@ class Indexer extends AbstractClientAware
      */
     public function index(array $document)
     {
-        $head = array_diff_key($document, array_flip(['_score', '_source']));
+        $head = array_diff_key($document, array_flip(['_score', '_source', 'fields']));
         $head['_index'] = $this->getIndex();
+
+        if (isset($document['fields'])) {
+            $head = array_merge($head, $document['fields']);
+            unset($document['fields']);
+        }
 
         $this->addBulk(['index' => $head], $document['_source']);
     }

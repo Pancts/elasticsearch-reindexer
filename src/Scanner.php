@@ -56,6 +56,7 @@ class Scanner extends AbstractClientAware
             'size' => 25,
             'index' => $this->getIndex(),
             'body' => [
+                'fields' => ['_parent', '_routing', '_source'],
                 'query' => [
                     'match_all' => []
                 ]
