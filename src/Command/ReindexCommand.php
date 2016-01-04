@@ -43,15 +43,22 @@ class ReindexCommand extends Command
                 'host',
                 'h',
                 InputOption::VALUE_REQUIRED,
-                'Elasticsearch client host',
-                '127.0.0.1'
+                'Elasticsearch index and scan client host',
+                '127.0.0.1:9200'
             )
             ->addOption(
-                'port',
-                'p',
+                'index-host',
+                'ih',
                 InputOption::VALUE_REQUIRED,
-                'Elasticsearch client port',
-                '9200'
+                'Elasticsearch index client host',
+                null
+            )
+            ->addOption(
+                'scan-host',
+                'sh',
+                InputOption::VALUE_REQUIRED,
+                'Elasticsearch scan client host',
+                null
             )
             ->addOption(
                 'bulk',
@@ -67,9 +74,8 @@ class ReindexCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $host = sprintf("%s:%s", $input->getOption('host'), $input->getOption('port'));
-        $scanner = new Scanner($host, $input->getArgument('scan'));
-        $indexer = new Indexer($host, $input->getArgument('index'));
+        $scanner = new Scanner($this->getHost($input, 'scan-host'), $input->getArgument('scan'));
+        $indexer = new Indexer($this->getHost($input, 'index-host'), $input->getArgument('index'));
         $indexer->setBulkSize(intval($input->getOption('bulk')));
 
         $output->writeln('<info>Scanning & indexing...</info>');
@@ -88,5 +94,18 @@ class ReindexCommand extends Command
         $output->writeln('<comment>done.</comment>');
 
         return 0;
+    }
+
+    /**
+     * Returns specific host, fallbacks to default if does not exist.
+     *
+     * @param InputInterface $input
+     * @param string         $type
+     *
+     * @return string
+     */
+    private function getHost(InputInterface $input, $type)
+    {
+        return $input->getOption($type) !== null ? $input->getOption($type) : $input->getOption('host');
     }
 }
